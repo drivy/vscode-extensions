@@ -1,4 +1,4 @@
-# CSS classes Completion
+# CSS classes completion
 
 CSS classes completion based on a CSS utilities file.
 
