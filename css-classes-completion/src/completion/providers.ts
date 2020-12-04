@@ -92,10 +92,11 @@ export const buildHamlProvider = (
         const isHtmlTagContext =
           trimedLinePrefix.startsWith(".") || trimedLinePrefix.startsWith("%");
 
+        let dotPartialClassNameMatch = null;
         if (isHtmlTagContext) {
-          const partialClassNameMatch = findLast(/\.([^\.]+)/gi, linePrefix);
-          if (partialClassNameMatch != null) {
-            const partialClassName = partialClassNameMatch[1];
+          dotPartialClassNameMatch = findLast(/\.([^\.]+)/gi, linePrefix);
+          if (dotPartialClassNameMatch != null) {
+            const partialClassName = dotPartialClassNameMatch[1];
 
             let replacementRange: any = {
               start: {
@@ -112,7 +113,9 @@ export const buildHamlProvider = (
               classPrefix
             );
           }
-        } else {
+        }
+
+        if (!dotPartialClassNameMatch) {
           const classAttributeMatch = findLast(
             /(?:\b|:)class(?:Name)?:[ ]?['"`{]/gi,
             linePrefix
