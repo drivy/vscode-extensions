@@ -6,6 +6,7 @@ import {
 import { MarkupKind } from "vscode-languageserver";
 import { getColorFromValue } from "../util/color";
 import { CompletionItemKind } from "vscode";
+import { convertRemToPx, extractRemUnit } from "../util/css-units";
 
 const tailwindSizeSortWeights = [
   ["2xs", 1],
@@ -16,6 +17,8 @@ const tailwindSizeSortWeights = [
   ["2xl", 7],
   ["xl", 6],
 ];
+
+const ROOT_FONT_SIZE = 16;
 
 function completionsFromClassList(
   classList: string,
@@ -157,10 +160,9 @@ export function getCompletionsFromPartialClassName(
 
     let extraDetails: string = "";
 
-    var m = match.propertyValue.match(/([-]?\d*\.?\d+)rem/);
-    if (m) {
-      const value = parseFloat(m[1].startsWith(".") ? `0${m[1]}` : m[1]);
-      extraDetails = `=> ${16 * value}px`;
+    const remUnit = extractRemUnit(match.propertyValue);
+    if (remUnit) {
+      extraDetails = `=> ${convertRemToPx(remUnit)}`;
     }
 
     if (!documentation) {
@@ -214,8 +216,6 @@ export function getCompletionsFromClassAttributeMatch(
 
   let tokens = Array.from(lexer);
   let last = tokens[tokens.length - 1];
-
-  //console.log('last', last);
 
   if (
     (last.type && last.type.startsWith("start")) ||

@@ -1,24 +1,12 @@
 import * as vscode from "vscode";
 import {
+  HTML_JAVASCRIPT_FILE_SELECTORS,
+  HAML_FILE_SELECTORS,
+} from "../file-selectors";
+import {
   getCompletionsFromClassAttributeMatch,
   getCompletionsFromPartialClassName,
 } from "./completion";
-
-const HTML_JAVASCRIPT_FILE_SELECTORS = [
-  { language: "javascript", scheme: "file" },
-  { language: "javascript", scheme: "untitled" },
-  { language: "javascriptreact", scheme: "file" },
-  { language: "javascriptreact", scheme: "untitled" },
-  { language: "typescript", scheme: "file" },
-  { language: "typescript", scheme: "untitled" },
-  { language: "typescriptreact", scheme: "file" },
-  { language: "typescriptreact", scheme: "untitled" },
-];
-
-const HAML_FILE_SELECTORS = [
-  { language: "haml", scheme: "file" },
-  { language: "haml", scheme: "untitled" },
-];
 
 export function findAll(re: RegExp, str: string): RegExpMatchArray[] {
   let match: RegExpMatchArray | null;

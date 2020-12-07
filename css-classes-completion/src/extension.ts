@@ -5,6 +5,8 @@ import {
   buildHtmlJavascriptProvider,
   buildHamlProvider,
 } from "./completion/providers";
+import { buildHoverProvider } from "./hover/providers";
+import { addRemToPx } from "./util/css-units";
 
 export function activate(context: vscode.ExtensionContext) {
   const utilitiesFileRawPath:
@@ -47,10 +49,12 @@ export function activate(context: vscode.ExtensionContext) {
             .map((rule: any) => {
               return {
                 ...rule,
-                stringified: css.stringify({
-                  type: "stylesheet",
-                  stylesheet: { rules: [rule] },
-                }),
+                stringified: addRemToPx(
+                  css.stringify({
+                    type: "stylesheet",
+                    stylesheet: { rules: [rule] },
+                  })
+                ),
               };
             })
             .forEach((rule: any) => cssRules.push(rule));
@@ -61,6 +65,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     buildHtmlJavascriptProvider(cssRules, classPrefix),
-    buildHamlProvider(cssRules, classPrefix)
+    buildHamlProvider(cssRules, classPrefix),
+    buildHoverProvider(cssRules)
   );
 }
