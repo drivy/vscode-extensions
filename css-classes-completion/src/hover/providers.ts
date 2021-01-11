@@ -9,7 +9,10 @@ export const buildHoverProvider = (cssRules: any[]) =>
     [...HTML_JAVASCRIPT_FILE_SELECTORS, ...HAML_FILE_SELECTORS],
     {
       provideHover(document, position, token) {
-        const range = document.getWordRangeAtPosition(position, /[\w-]+/);
+        const range = document.getWordRangeAtPosition(
+          position,
+          /[\w-]+[/]?[\w-]+/
+        );
         const word = document.getText(range);
 
         if (word) {

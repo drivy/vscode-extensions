@@ -1,8 +1,4 @@
 import * as vscode from "vscode";
-import {
-  getClassAttributeLexer,
-  getComputedClassAttributeLexer,
-} from "../util/lexers";
 import { MarkupKind } from "vscode-languageserver";
 import { getColorFromValue } from "../util/color";
 import { CompletionItemKind } from "vscode";
@@ -84,11 +80,11 @@ export function getCompletionsFromPartialClassName(
   let matchingClasses = [];
 
   if (classPrefix) {
-    const isCobaltClass = partialClassName.startsWith(classPrefix);
+    const isUtilityClass = partialClassName.startsWith(classPrefix);
 
     matchingClasses = cssRules.reduce((acc, classObj, i) => {
       if (
-        isCobaltClass &&
+        isUtilityClass &&
         classObj.selectors &&
         classObj.selectors[0].startsWith("." + partialClassName)
       ) {
@@ -160,15 +156,18 @@ export function getCompletionsFromPartialClassName(
 
     let extraDetails: string = "";
 
-    const remUnit = extractRemUnit(match.propertyValue);
-    if (remUnit) {
-      extraDetails = `=> ${convertRemToPx(remUnit)}`;
+    if (match.cssObj.declarations.length === 1) {
+      // atomic class
+      const remUnit = extractRemUnit(match.propertyValue);
+      if (remUnit) {
+        extraDetails = `=> ${convertRemToPx(remUnit)}`;
+      }
     }
 
     if (!documentation) {
       documentation = {
-        kind: MarkupKind.Markdown,
-        value: ["```css", match.cssObj.stringified, "```"].join("\n"),
+        language: "css",
+        value: match.cssObj.stringified,
       };
     }
 
@@ -192,67 +191,4 @@ export function getCompletionsFromPartialClassName(
   // console.log('completions', completions);
 
   return completions;
-}
-
-export function getCompletionsFromClassAttributeMatch(
-  classAttributeMatch: RegExpMatchArray,
-  linePrefix: string,
-  position: vscode.Position,
-  cssRules: any[],
-  classPrefix: string | undefined
-) {
-  //console.log('classAttributeMatch[0]', classAttributeMatch[0]);
-
-  const lexer =
-    classAttributeMatch[0][0] === ":"
-      ? getComputedClassAttributeLexer()
-      : getClassAttributeLexer();
-
-  lexer.reset(
-    linePrefix.substr(
-      (classAttributeMatch.index as number) + classAttributeMatch[0].length - 1
-    )
-  );
-
-  let tokens = Array.from(lexer);
-  let last = tokens[tokens.length - 1];
-
-  if (
-    (last.type && last.type.startsWith("start")) ||
-    last.type === "classlist"
-  ) {
-    let classList = "";
-    for (let i = tokens.length - 1; i >= 0; i--) {
-      if (tokens[i].type === "classlist") {
-        classList = tokens[i].value + classList;
-      } else {
-        break;
-      }
-    }
-
-    const range = {
-      start: {
-        line: position.line,
-        character: position.character - classList.length,
-      },
-      end: position,
-    };
-
-    let { partialClassName, replacementRange } = completionsFromClassList(
-      classList,
-      range
-    );
-
-    return getCompletionsFromPartialClassName(
-      partialClassName,
-      replacementRange,
-      cssRules,
-      classPrefix,
-      !!vscode.workspace
-        .getConfiguration()
-        .get("cssClassesCompletion.extraWhiteSpace")
-    );
-  }
-
-  return null;
 }

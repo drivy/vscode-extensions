@@ -3,10 +3,7 @@ import {
   HTML_JAVASCRIPT_FILE_SELECTORS,
   HAML_FILE_SELECTORS,
 } from "../file-selectors";
-import {
-  getCompletionsFromClassAttributeMatch,
-  getCompletionsFromPartialClassName,
-} from "./completion";
+import { getCompletionsFromPartialClassName } from "./completion";
 
 export function findAll(re: RegExp, str: string): RegExpMatchArray[] {
   let match: RegExpMatchArray | null;
@@ -40,7 +37,7 @@ export const buildHtmlJavascriptProvider = (
           .lineAt(position)
           .text.substr(0, position.character);
 
-        // console.log('linePrefix', linePrefix);
+        // console.log("linePrefix", linePrefix);
 
         const classAttributeMatch = findLast(
           /(?:\b|:)class(?:Name)?=['"`{]/gi,
@@ -48,10 +45,12 @@ export const buildHtmlJavascriptProvider = (
         );
 
         if (classAttributeMatch != null) {
-          return getCompletionsFromClassAttributeMatch(
-            classAttributeMatch,
-            linePrefix,
-            position,
+          const range = document.getWordRangeAtPosition(position, /[\w-]+/);
+          const partialClassName = document.getText(range);
+
+          return getCompletionsFromPartialClassName(
+            partialClassName,
+            range,
             cssRules,
             classPrefix
           );
@@ -83,6 +82,7 @@ export const buildHamlProvider = (
         let dotPartialClassNameMatch = null;
         if (isHtmlTagContext) {
           dotPartialClassNameMatch = findLast(/\.([^\.]+)/gi, linePrefix);
+
           if (dotPartialClassNameMatch != null) {
             const partialClassName = dotPartialClassNameMatch[1];
 
@@ -110,12 +110,12 @@ export const buildHamlProvider = (
           );
 
           if (classAttributeMatch != null) {
-            // console.log('classAttributeMatch[0]', classAttributeMatch[0]);
+            const range = document.getWordRangeAtPosition(position, /[\w-]+/);
+            const partialClassName = document.getText(range);
 
-            return getCompletionsFromClassAttributeMatch(
-              classAttributeMatch,
-              linePrefix,
-              position,
+            return getCompletionsFromPartialClassName(
+              partialClassName,
+              range,
               cssRules,
               classPrefix
             );

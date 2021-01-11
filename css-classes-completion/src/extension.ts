@@ -42,8 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
     var openPath = vscode.Uri.file(filePath);
     vscode.workspace.openTextDocument(openPath).then((doc) => {
       if (cssRules.length === 0) {
-        const parsedCss = css.parse(doc.getText());
-
+        const parsedCss = css.parse(doc.getText().replace(/\\/g, ""));
         if (parsedCss != null) {
           (parsedCss as any).stylesheet.rules
             .map((rule: any) => {
@@ -52,7 +51,18 @@ export function activate(context: vscode.ExtensionContext) {
                 stringified: addRemToPx(
                   css.stringify({
                     type: "stylesheet",
-                    stylesheet: { rules: [rule] },
+                    stylesheet: {
+                      rules: [
+                        rule.selectors
+                          ? {
+                              ...rule,
+                              selectors: [
+                                rule.selectors[0].replace(/\//g, "\\/"),
+                              ],
+                            }
+                          : rule,
+                      ],
+                    },
                   })
                 ),
               };

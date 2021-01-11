@@ -1,7 +1,7 @@
 {
   "name": "css-classes-completion",
   "displayName": "CSS classes completion",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "publisher": "getaround-fr",
   "repository": {
     "type": "git",
@@ -65,7 +65,6 @@
   },
   "devDependencies": {
     "@types/css": "0.0.31",
-    "@types/moo": "^0.5.3",
     "@types/node": "^12.12.0",
     "@types/vscode": "^1.32.0",
     "@typescript-eslint/eslint-plugin": "^3.0.2",
