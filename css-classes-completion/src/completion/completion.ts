@@ -14,36 +14,6 @@ const tailwindSizeSortWeights = [
   ["xl", 6],
 ];
 
-const ROOT_FONT_SIZE = 16;
-
-function completionsFromClassList(
-  classList: string,
-  classListRange: any,
-  filter?: (item: any) => boolean
-): any {
-  let classNames = classList.split(/[\s+]/);
-  const partialClassName = classNames[classNames.length - 1];
-
-  // console.log('classNames', classNames);
-  // console.log('partialClassName', partialClassName);
-  let sep = "-"; //state.separator
-  let parts = partialClassName.split(sep);
-  let subset: any;
-  let subsetKey: string[] = [];
-  let isSubset: boolean = false;
-  let replacementRange = {
-    ...classListRange,
-    start: {
-      ...classListRange.start,
-      character: classListRange.end.character - partialClassName.length,
-    },
-  };
-
-  // console.log('replacementRange', replacementRange);
-
-  return { partialClassName, replacementRange };
-}
-
 function computeItemCompletionSortText(
   label: string,
   classPrefix: string | undefined
@@ -72,7 +42,8 @@ export function getCompletionsFromPartialClassName(
   partialClassName: string,
   replacementRange: any,
   cssRules: any[],
-  classPrefix: string | undefined,
+  classPrefix?: string,
+  rootFontSizeInPx?: number,
   shouldInsertExtraWhiteSpace: boolean = false
 ) {
   // console.log('partialClassName', partialClassName);
@@ -160,7 +131,7 @@ export function getCompletionsFromPartialClassName(
       // atomic class
       const remUnit = extractRemUnit(match.propertyValue);
       if (remUnit) {
-        extraDetails = `=> ${convertRemToPx(remUnit)}`;
+        extraDetails = `=> ${convertRemToPx(remUnit, rootFontSizeInPx)}`;
       }
     }
 

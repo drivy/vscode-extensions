@@ -24,7 +24,9 @@ export function findLast(re: RegExp, str: string): RegExpMatchArray | null {
 
 export const buildHtmlJavascriptProvider = (
   cssRules: any[],
-  classPrefix: string | undefined
+  classPrefix?: string,
+  rootFontSizeInPx?: number,
+  shouldInsertExtraWhiteSpace?: boolean
 ) =>
   vscode.languages.registerCompletionItemProvider(
     HTML_JAVASCRIPT_FILE_SELECTORS,
@@ -52,7 +54,9 @@ export const buildHtmlJavascriptProvider = (
             partialClassName,
             range,
             cssRules,
-            classPrefix
+            classPrefix,
+            rootFontSizeInPx,
+            shouldInsertExtraWhiteSpace
           );
         }
       },
@@ -62,7 +66,9 @@ export const buildHtmlJavascriptProvider = (
 
 export const buildHamlProvider = (
   cssRules: any[],
-  classPrefix: string | undefined
+  classPrefix?: string,
+  rootFontSizeInPx?: number,
+  shouldInsertExtraWhiteSpace?: boolean
 ) =>
   vscode.languages.registerCompletionItemProvider(
     HAML_FILE_SELECTORS,
@@ -98,7 +104,9 @@ export const buildHamlProvider = (
               partialClassName,
               replacementRange,
               cssRules,
-              classPrefix
+              classPrefix,
+              rootFontSizeInPx,
+              false
             );
           }
         }
@@ -117,7 +125,9 @@ export const buildHamlProvider = (
               partialClassName,
               range,
               cssRules,
-              classPrefix
+              classPrefix,
+              rootFontSizeInPx,
+              shouldInsertExtraWhiteSpace
             );
           }
         }

@@ -48,6 +48,12 @@
           "markdownDescription": "Class prefix",
           "scope": "language-overridable"
         },
+        "cssClassesCompletion.rootFontSizeInPx": {
+          "type": "number",
+          "default": 16,
+          "markdownDescription": "body font size value in px used to convert rem values",
+          "scope": "language-overridable"
+        },
         "cssClassesCompletion.extraWhiteSpace": {
           "type": "boolean",
           "default": true,

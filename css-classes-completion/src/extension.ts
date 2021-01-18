@@ -20,6 +20,16 @@ export function activate(context: vscode.ExtensionContext) {
       .getConfiguration()
       .get("cssClassesCompletion.classPrefix") || undefined;
 
+  const rootFontSizeInPx: number | undefined =
+    vscode.workspace
+      .getConfiguration()
+      .get("cssClassesCompletion.rootFontSizeInPx") || undefined;
+
+  const shouldInsertExtraWhiteSpace: boolean | undefined =
+    vscode.workspace
+      .getConfiguration()
+      .get("cssClassesCompletion.extraWhiteSpace") || undefined;
+
   if (!vscode.workspace.rootPath) {
     return console.log("You must have a workspace opened.");
   }
@@ -63,7 +73,8 @@ export function activate(context: vscode.ExtensionContext) {
                           : rule,
                       ],
                     },
-                  })
+                  }),
+                  rootFontSizeInPx
                 ),
               };
             })
@@ -74,8 +85,18 @@ export function activate(context: vscode.ExtensionContext) {
   }
 
   context.subscriptions.push(
-    buildHtmlJavascriptProvider(cssRules, classPrefix),
-    buildHamlProvider(cssRules, classPrefix),
+    buildHtmlJavascriptProvider(
+      cssRules,
+      classPrefix,
+      rootFontSizeInPx,
+      shouldInsertExtraWhiteSpace
+    ),
+    buildHamlProvider(
+      cssRules,
+      classPrefix,
+      rootFontSizeInPx,
+      shouldInsertExtraWhiteSpace
+    ),
     buildHoverProvider(cssRules)
   );
 }
