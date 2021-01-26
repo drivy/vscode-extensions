@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import { MarkupKind } from "vscode-languageserver";
 import { getColorFromValue } from "../util/color";
 import { CompletionItemKind } from "vscode";
 import { convertRemToPx, extractRemUnit } from "../util/css-units";
