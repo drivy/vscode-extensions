@@ -1,4 +1,4 @@
-# CSS classes completion
+# CSS Classes Completion
 
 CSS classes completion based on a CSS utilities file.
 
@@ -8,9 +8,9 @@ Compatible with a TailwindCSS generated file.
 
 Given a CSS utilities file, the extension will parse the css classes to provide completion and documentation in a class list context.
 
-# Supported files
+# Supported Files
 
-the following file extensions are supported:
+The following file extensions are supported:
 - html
 - js
 - ts
@@ -19,33 +19,33 @@ the following file extensions are supported:
 
 ## Features
 
-### Class completion
+### Class Completion
 
 Class completion will be triggered when encountering the `-` char in a "class list" context.
 You can force to display the completion list hitting `ctrl + space`
 
 ![completion](media/doc/completion-feature.gif)
 
-### Reverse completion (searching classname from css property)
+### Reverse Completion (searching classname from css property)
 
 You can search for an utility class by typing the matching css property.
 
 ![reverse completion feature](media/doc/reverse-completion-feature.gif)
 
-### Color preview
+### Color Preview
 
 Atomic classes setting a text color or a background-color will get a color preview embedded in their completion making it easy to select the correct one.
 
 ![color preview](media/doc/color-bg-feature.png) ![color preview](media/doc/color-text-feature.png)
 
-### REM to PX convertion
+### REM To PX Convertion
 
 This extension will automatically convert `rem` to `px` values as extra documentation comments.
 The convertion will be done using the `root font-size in pixel` setting value (default: 16)
 
 ![rem to px](media/doc/rem-to-px-feature.png)
 
-### Hover documentation
+### Hover Documentation
 
 Mouse over an utility class will display the related css property values applied.
 
@@ -72,7 +72,7 @@ Please, configure the extension settings then reload your IDE
   
 - Extra white space: to add an extra white space on completion validation
 
-### Installation with TailwindCSS
+### Make It Work With TailwindCSS
 
 This extension is designed to work with a list of css classes defined in a css file in your workspace (can be imported from a node dependency aka `node_modules` folder).
 It won't look for and parse an existing TailwindCSS configuration file.
