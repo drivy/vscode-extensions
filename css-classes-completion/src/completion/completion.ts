@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { getColorFromValue } from "../util/color";
 import { CompletionItemKind } from "vscode";
-import { convertRemToPx, extractRemUnit } from "../util/css-units";
+import { extractRemUnit, replaceRemToPx } from "../util/css-units";
 
 const tailwindSizeSortWeights = [
   ["2xs", 1],
@@ -45,8 +45,6 @@ export function getCompletionsFromPartialClassName(
   rootFontSizeInPx?: number,
   shouldInsertExtraWhiteSpace: boolean = false
 ) {
-  // console.log('partialClassName', partialClassName);
-
   let matchingClasses = [];
 
   if (classPrefix) {
@@ -110,8 +108,6 @@ export function getCompletionsFromPartialClassName(
     }, []);
   }
 
-  // console.log('cobalt matching classes', matchingClasses);
-
   const completions = matchingClasses.map((match: any) => {
     let kind: CompletionItemKind = CompletionItemKind.Constant;
     let documentation: any = undefined;
@@ -124,13 +120,16 @@ export function getCompletionsFromPartialClassName(
       documentation = match.propertyValue;
     }
 
-    let extraDetails: string = "";
+    let remToPxResult: string = "";
 
     if (match.cssObj.declarations.length === 1) {
       // atomic class
       const remUnit = extractRemUnit(match.propertyValue);
       if (remUnit) {
-        extraDetails = `=> ${convertRemToPx(remUnit, rootFontSizeInPx)}`;
+        remToPxResult = `=> ${replaceRemToPx(
+          match.propertyValue,
+          rootFontSizeInPx
+        )}`;
       }
     }
 
@@ -143,8 +142,8 @@ export function getCompletionsFromPartialClassName(
 
     const item = new vscode.CompletionItem(match.label, kind);
 
-    if (color || extraDetails) {
-      item.detail = `${match.property}: ${match.propertyValue}; ${extraDetails}`;
+    if (color || remToPxResult.length) {
+      item.detail = `${match.property}: ${match.propertyValue}; ${remToPxResult}`;
     }
 
     item.documentation = documentation;
@@ -157,8 +156,6 @@ export function getCompletionsFromPartialClassName(
 
     return item;
   });
-
-  // console.log('completions', completions);
 
   return completions;
 }

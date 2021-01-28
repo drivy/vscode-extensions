@@ -1,7 +1,7 @@
 const DEFAULT_ROOT_FONT_SIZE = 16;
 
 const remUnitRegex = /([-]?\d*\.?\d+)rem/;
-const globalEndingRemUnitRegex = /([-]?\d*\.?\d+)rem;/g;
+const globalRemUnitRegex = /([-]?\d*\.?\d+)rem/g;
 
 export const convertRemToPx = (
   rem: string,
@@ -16,9 +16,16 @@ export const extractRemUnit = (sValue: string) => {
   return match ? match[1] : null;
 };
 
+export const replaceRemToPx = (sCss: string, rootFontSizeInPx?: number) => {
+  return sCss.replace(
+    globalRemUnitRegex,
+    (m) => `${convertRemToPx(m, rootFontSizeInPx)}`
+  );
+};
+
 export const addRemToPx = (sCss: string, rootFontSizeInPx?: number) => {
   return sCss.replace(
-    globalEndingRemUnitRegex,
+    globalRemUnitRegex,
     (m) => `${m} /* ${convertRemToPx(m, rootFontSizeInPx)} */`
   );
 };
