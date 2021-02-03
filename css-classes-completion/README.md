@@ -1,16 +1,18 @@
-# CSS classes completion
+# CSS Classes Completion
 
-CSS classes completion based on a CSS utilities file.
+CSS classes completion based on a CSS file input.
+
+It is best designed to work with utility/atomic classes but will parse any CSS class from the input.
 
 Compatible with a TailwindCSS generated file.
 
 # Useage
 
-Given a CSS utilities file, the extension will parse the css classes to provide completion and documentation in a class list context.
+Given a CSS file, the extension will parse the CSS classes to provide completion and documentation in a "class list" context.
 
-# Supported files
+# Supported Files
 
-the following file extensions are supported:
+The following file extensions are supported:
 - html
 - js
 - ts
@@ -19,45 +21,46 @@ the following file extensions are supported:
 
 ## Features
 
-### Class completion
+### Class Completion
 
-Class completion will be triggered when encountering the `-` char in a "class list" context.
-You can force to display the completion list hitting `ctrl + space`
+Suggestions for class names will be triggered when encountering the `-` char in a "class list" context.
+You can force display of the completion list by hitting `ctrl + space`
 
 ![completion](media/doc/completion-feature.gif)
 
-### Reverse completion (searching classname from css property)
+### Reverse Completion (searching for classname by CSS property)
 
-You can search for an utility class by typing the matching css property.
+You can search for a utility class by typing the matching CSS property.
 
 ![reverse completion feature](media/doc/reverse-completion-feature.gif)
 
-### Color preview
+### Color Preview
 
 Atomic classes setting a text color or a background-color will get a color preview embedded in their completion making it easy to select the correct one.
 
 ![color preview](media/doc/color-bg-feature.png) ![color preview](media/doc/color-text-feature.png)
 
-### REM to PX convertion
+### REM To PX Convertion
 
 This extension will automatically convert `rem` to `px` values as extra documentation comments.
-The convertion will be done using the `root font-size in pixel` setting value (default: 16)
+The conversion will be done using the `root font-size in pixel` setting value (default: 16)
 
 ![rem to px](media/doc/rem-to-px-feature.png)
 
-### Hover documentation
+### Hover preview
 
-Mouse over an utility class will display the related css property values applied.
+Hovering your mouse over a parsed class will display the related CSS property values applied.
 
 ![hover feature](media/doc/hover-feature.gif)
 
 ## Installation
 
-Please, configure the extension settings then reload your IDE
+You have to configure the input CSS file path to make the extension work.
+Please configure the extension settings, then reload your IDE.
 
 ### Extension Settings
 
-- CSS file pathes: the relative path to your CSS utilities file. Depending your projects, your file could be at differents places. You can defined multiples pathes separating them with a `,`
+- CSS file paths: the relative path to your CSS utilities file.
 
   ```
   Example:
@@ -65,18 +68,20 @@ Please, configure the extension settings then reload your IDE
   node_modules/my-module-name/my-css-file.css
   ```
 
-- Class prefix: If your utility classes contains a prefix, please define it there (separator included)
-  Example: with classes like `c-mr-sm`, `c-rounded`, prefix should be `c-`
+  Depending on your project, your file could be in differents places. You can define multiple paths by separating them with a `,`. The first path matching an existing file will be used, else the next ones will be used as fallbacks.
 
-- Root font-size in pixel: Font-size in pixel of your body document (default: 16px). It will be used to convert rem values to px
+- Class prefix: If your utility classes contain a prefix, please define it there (separator included).
+  Example: with classes like `c-mr-sm`, `c-rounded`, the prefix should be `c-`.
+
+- Root font-size in pixels: Font-size in pixels of your body document (default: 16px). It will be used to convert `rem` values to `px`.
   
-- Extra white space: to add an extra white space on completion validation
+- Extra white space: to add an extra white space on completion validation. 
 
-### Installation with TailwindCSS
+### Make It Work With TailwindCSS
 
-This extension is designed to work with a list of css classes defined in a css file in your workspace (can be imported from a node dependency aka `node_modules` folder).
+This extension is designed to work with a list of CSS classes defined in a CSS file in your workspace (which can be imported from a node dependency aka `node_modules` folder).
 It won't look for and parse an existing TailwindCSS configuration file.
 
-If your TailwindCSS configuration file is in the same project that the one you want this extension to work on, the official extension may be the one you're looking for.
+If your TailwindCSS configuration file is in the same project as the one you want this extension to work on, [this may be the extension](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) that you're looking for.
 
-If you want to use this extension for its features or whatever reason, you need to generate the TailwindCSS result file every time you change your TailwindCSS configuration file and configure the correct `CSS file paths` setting
+If you want to use this extension for its features or any other reason, you need to generate the TailwindCSS result file every time you change your TailwindCSS configuration file, and configure the correct `CSS file paths` setting. 
