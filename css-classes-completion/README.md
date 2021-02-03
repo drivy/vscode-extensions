@@ -40,7 +40,7 @@ Atomic classes setting a text color or a background-color will get a color previ
 
 ![color preview](media/doc/color-bg-feature.png) ![color preview](media/doc/color-text-feature.png)
 
-### REM To PX Convertion
+### REM To PX Conversion
 
 This extension will automatically convert `rem` to `px` values as extra documentation comments.
 The conversion will be done using the `root font-size in pixel` setting value (default: 16)
